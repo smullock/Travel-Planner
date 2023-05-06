@@ -2,14 +2,15 @@ import { Button, Form, Input } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+
 function Login() {
 
-    const onFinish = (values) => {
-        console.log('Success:', values);
-      };
-      const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-    };
+  const onFinish = (values) => {
+    console.log('Success:', values);
+  };
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+};
 
   return (
     <div className='LoginForm'>
@@ -18,18 +19,6 @@ function Login() {
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
     >
-        <Form.Item
-          label="Username"
-          name="username"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your username!',
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
 
         <Form.Item
           label="Email"
