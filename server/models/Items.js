@@ -14,22 +14,26 @@ const itemSchema = new Schema({
     type: String,
     required: true,
   },
-  flights: {
-    type: Number,
+  details: {
+    type: String,
     required: true,
   },
-  food: {
-    type: Number,
+  category: {
+    type: Schema.Types.ObjectId,
+    ref: 'Category',
     required: true,
   },
-  activities: {
+
+  budgetTotal: {
     type: Number,
-    required: true,
+    required: false,
   },
-  transport: {
+
+  expenseTotal: {
     type: Number,
-    required: true,
+    required: false,
   },
+  
 
 });
 
@@ -37,4 +41,4 @@ const itemSchema = new Schema({
 
 const Item = model('Items', itemSchema);
 
-module.exports = Items;
+module.exports = Item;
