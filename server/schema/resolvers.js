@@ -1,50 +1,51 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User, Item, Category } = require('../models');
-const { signToken } = require('../utils/auths');
+const { User, Item, Category, Budget } = require('../models');
+const { signToken } = require('../utils/auth');
 const { GraphQLScalarType, Kind } = require('graphql');
 
 const resolvers = {
   Query: {
     users: async () => {
-      return User.find();
+      const users = await User.find({});
+      return users;
     },
     user: async (parent, { username }) => {
-      return User.findOne({ username });
+      const user = await User.findOne({ username });
+      return user;
+    },
+    categories: async () => {
+      const categories = await Category.find({});
+      return categories;
     },
     items: async () => {
-      const items = await Item.find();
+      const items = await Item.find({});
       return items;
     },
-     categories: async() =>{
-      const categories = await collection.find().toArray();
-      return categories;
-    } 
-  },
-  Date: new GraphQLScalarType({
-    name: 'Date',
-    description: 'Date custom scalar type',
-    parseValue(value) {
-      return new Date(value); // value from the client
+    item: async (parent, { _id }) => {
+      const item = await Item.findById(_id);
+      return item;
     },
-    serialize(value) {
-      return value.getTime(); // value sent to the client
+    budgets: async () => {
+      const budgets = await Budget.find({});
+      return budgets;
     },
-    parseLiteral(ast) {
-      if (ast.kind === Kind.INT) {
-        return new Date(parseInt(ast.value, 10)); // ast value is always in string format
-      }
-      return null;
-    }
-  }),
+    budget: async (parent, { _id }) => {
+      const budget = await Budget.findById(_id);
+      return budget;
+    },
+
+    budget: async (parent, { _id }) => {
+      const budget = await Budget.findById(budgetId).populate('item');
+    },
+  }, // <-- Missing closing brace
+
   Item: {
-    expenseTotal: (item) => {
-      return item.expenses.reduce((total, expense) => total + expense.amount, 0);
+    totalBudget: async (item) => {
+      const budgets = await Budget.find({ item: item._id });
+      return budgets.reduce((total, budget) => total + budget.amount, 0);
     },
-    totalBudget: (item) => {
-        return item.budgets.reduce((total, budget) => total + budget.amount, 0);
-      },
-      
   },
+
   Mutation: {
     addUser: async (parent, { username, email, password }) => {
       // Create the user - Registration
@@ -77,19 +78,27 @@ const resolvers = {
       // Return an `Auth` object that consists of the signed token and user's information
       return { token, user };
     },
-    addItem: async (parent, { date, city, hotel }) => {
-      const item = await Item.create({ date, city, hotel });
-      return item;
+    addItem: async (parent, { input }) => {
+      const newItem = await Item.create(input);
+      return newItem;
+    },
+    addBudget: async (parent, { input }) => {
+      const newBudget = await Budget.create(input);
+      return newBudget;
     },
     deleteItem: async (parent, { id }) => {
       const item = await Item.findByIdAndDelete(id);
       return item;
     },
-    updateItem: async (parent, { id, date, city, hotel }) => {
-      const item = await Item.findByIdAndUpdate(id, { date, city, hotel }, { new: true });
-      return item;
-    }
-  }
+    updateItem: async (parent, { id, item }) => {
+
+      const updatedItem = await Item.findByIdAndUpdate(id, item, { new: true });
+      return updatedItem;
+    },
+    
+  },
+    
+
 };
 
 module.exports = resolvers;

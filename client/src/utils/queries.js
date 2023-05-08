@@ -21,10 +21,7 @@ export const GET_ITEMS = gql`
         category
         amount
       }
-      expenses {
-        amount
-      }
-      expenseTotal
+    
       totalBudget
     }
   }

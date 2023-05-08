@@ -1,9 +1,9 @@
 const { Schema, model } = require('mongoose');
-const bcrypt = require('bcrypt');
+
 
 const itemSchema = new Schema({
   date: {
-    type: Date,
+    type: String,
     required: true,
   },
   city: {
@@ -18,27 +18,22 @@ const itemSchema = new Schema({
     type: String,
     required: true,
   },
-  category: {
+  budget: {
     type: Schema.Types.ObjectId,
-    ref: 'Category',
-    required: true,
+    ref: 'Budget',
   },
 
-  budgetTotal: {
-    type: Number,
-    required: false,
-  },
+  // budgetTotal: {
+  //   type: Number,
+  //   required: false,
+  // },
 
-  expenseTotal: {
-    type: Number,
-    required: false,
-  },
   
 
 });
 
 
 
-const Item = model('Items', itemSchema);
+const Item = model('Item', itemSchema);
 
 module.exports = Item;

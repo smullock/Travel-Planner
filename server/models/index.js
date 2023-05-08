@@ -1,6 +1,8 @@
-const Items = require('./Items');
+const Item = require('./Item');
 const User = require('./User');
 const Category = require('./Category');
+const Budget = require('./Budget');
 
 
-module.exports = { Items, User, Category };
+
+module.exports = { Item, User, Category, Budget  };

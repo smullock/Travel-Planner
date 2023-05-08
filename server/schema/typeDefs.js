@@ -14,7 +14,7 @@ const typeDefs = gql`
   }
 
   type Category {
-    id:ID!
+    _id:ID!
     name: String!
   }
 
@@ -23,24 +23,16 @@ const typeDefs = gql`
 }
 
 type Budget {
-  category: String!
-  amount: Float!
-  expenses: [Expense!]!
-}
-
-
-input BudgetInput {
-  category: String!
+  _id: ID!
+  category: Category!
   amount: Float!
 }
 
-  type Expense {
-    amount: Float!
-  }
 
-  input ExpenseInput {
-    amount: Float!
-  }
+# input BudgetInput {
+#   category: String!
+#   amount: Float!
+#  }
 
   type Item {
   _id: ID!
@@ -49,39 +41,36 @@ input BudgetInput {
   hotel: String!
   details: String
   budgets: [Budget!]!
-  expenses: [Expense!]!
-  expenseTotal: Float
   totalBudget: Float
 }
 
-input ItemInput {
-  date: String!
-  city: String!
-  hotel: String!
-  details: String
-  budgets: [BudgetInput!]!
+# input ItemInput {
+#   date: String!
+#   city: String!
+#   hotel: String!
+#   details: String
+#   budgets: [BudgetInput!]!
 }
-  scalar Date
 
   type Query {
     users: [User]
     user(username: String!): User
-    items: [Item!]!
     categories:[Category]!
+    items: [Item!]!
+    item(_id: ID!): Item!
+    budgets: [Budget!]!
+    budget(_id: ID!): Budget!
   }
 
-  type Mutation {
+  ttype Mutation {
     addUser(username: String!, email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
-    addItem(item: ItemInput!): Item
+    addItem(date: String!, city: String!, hotel: String!, details: String, budgets: [BudgetInput!]!): Item
+    addBudget(itemId: ID!, category: String!, amount: Float!): Item
     deleteItem(id: ID!): Item
-    updateItem(id: ID!, item: ItemInput!): Item
-    addExpense(itemId: ID!, budgetIndex: Int!, amount: Float!): Item
+    updateItem(id: ID!, date: String!, city: String!, hotel: String!, details: String, budgets: [BudgetInput!]!): Item 
   }
 
-
-
- 
 `;
 
 module.exports = typeDefs;

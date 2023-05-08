@@ -1,24 +1,13 @@
 const { Schema, model } = require('mongoose');
-const bcrypt = require('bcrypt');
+
 
 const categorySchema = new Schema({
  
-  flights: {
-    type: Number,
+  name: {
+    type: String,
     required: true,
   },
-  food: {
-    type: Number,
-    required: true,
-  },
-  activities: {
-    type: Number,
-    required: true,
-  },
-  transport: {
-    type: Number,
-    required: true,
-  },
+
 
 });
 
